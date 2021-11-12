@@ -1,45 +1,71 @@
 def parse():
-    print("$ Enter money")
+    print("$ Enter an amount")
     s = input("=>")
     d = ""
     c= ""
     n= len(s)
     x=0
     for i in range(n):
-        if s[i]=="D":
+        if s[i] == " ":
+            continue
+        elif s[i]=="D":
             x=i+1
             break
-        else:
+        elif s[i].isdigit() or s[i]=="-":
             d+=s[i]
-    for j in range(x,n):
-        if s[j]=="C":
-            break
         else:
+            print("Please enter valid input")
+            return None,None
+    for j in range(x,n):
+        if s[j] == " ":
+            continue
+        elif s[j]=="C":
+            break
+        elif s[j]=="-":
+            c+="-"
+        elif s[j].isdigit() or s[j]=="-":
             c+=s[j]
+        else :
+            print("Please enter valid input")
+            return None,None
     if c=="":
         c="0"
     if d=="" or "C" in d:
         d="0"
-    return int(c),int(d)
+    c,d=int(c),int(d)
+    if c > 99:
+        d+=c//100
+        c = c%100
+    return c,d
 
 def credit(balance):
     c,d = parse()
-    balance["d"]+=d
-    balance["c"]+=c
-    print("$",d,"Dollars and",c,"Cents")
+    if not c and not d:
+        return
+    tmpd = balance["d"]+d
+    tmpc = balance["c"]+c
+    if tmpc>balance["m"] or tmpd>balance["m"]:
+        print("$ Max amount is " + str(balance["m"]) + "D" )
+        return
+    balance["d"]=tmpd
+    balance["c"]=tmpc
+    print("$ Done")
 
 def debit(balance):
     c,d=parse()
+    #print("#",c,d)
+    if not c and not d:
+        return
     balance["d"]-=d
     balance["c"]-=c
-    print("$",d,"Dollars and",c,"Cents")
+    print("$ Done")
 
 def check(balance):
     print("$ Current balance is ",balance["d"],"D",balance["c"],"C")
 
 def main():
     turn =True
-    balance = {"d":0,"c":0}
+    balance = {"d":0,"c":0,"m":10**9}
     while turn:
         print("""
 $ Select an option:
@@ -48,7 +74,7 @@ $ Select an option:
 3. Check
 4. Exit
         """)
-        choice = int(input("Enter your choice: "))
+        choice = int(input("=>"))
         if choice == 1:
             credit(balance)
         elif choice == 2:
@@ -56,6 +82,7 @@ $ Select an option:
         elif choice == 3:
             check(balance)
         elif choice == 4:
+            print("$ Thank you!")
             break
         else:
             print("Invalid choice")
