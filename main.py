@@ -53,7 +53,6 @@ def credit(balance):
 
 def debit(balance):
     c,d=parse()
-    #print("#",c,d)
     if not c and not d:
         return
     balance["d"]-=d
@@ -61,31 +60,34 @@ def debit(balance):
     print("$ Done")
 
 def check(balance):
-    print("$ Current balance is ",balance["d"],"D",balance["c"],"C")
+    print("$ Current balance is "+str(balance["d"])+"D "+str(balance["c"])+"C")
 
 def main():
     turn =True
     balance = {"d":0,"c":0,"m":10**9}
     while turn:
-        print("""
+        try:
+            print("""
 $ Select an option:
 1. Credit
 2. Debit
 3. Check
 4. Exit
-        """)
-        choice = int(input("=>"))
-        if choice == 1:
-            credit(balance)
-        elif choice == 2:
-            debit(balance)
-        elif choice == 3:
-            check(balance)
-        elif choice == 4:
-            print("$ Thank you!")
-            break
-        else:
-            print("Invalid choice")
+            """)
+            choice = int(input("=>"))
+            if choice == 1:
+                credit(balance)
+            elif choice == 2:
+                debit(balance)
+            elif choice == 3:
+                check(balance)
+            elif choice == 4:
+                print("$ Thank you!")
+                break
+            else:
+                print("Invalid choice")
+        except Exception as e:
+            print("Please enter valid input :" )
 
 
 main()
