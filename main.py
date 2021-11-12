@@ -63,9 +63,8 @@ def check(balance):
     print("$ Current balance is "+str(balance["d"])+"D "+str(balance["c"])+"C")
 
 def main():
-    turn =True
     balance = {"d":0,"c":0,"m":10**9}
-    while turn:
+    while True:
         try:
             print("""
 $ Select an option:
